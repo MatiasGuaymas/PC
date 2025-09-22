@@ -1,0 +1,65 @@
+1. Resolver con SEMÁFOROS el siguiente problema. Simular un examen técnico para concursos Nodocentes
+en la Facultad, en el mismo participan 100 personas distribuidas en 4 concursos (25 personas en cada
+concurso) con un coordinador en cada una de ellos. Cada persona ya conoce en que concurso participa. El
+coordinador de cada concurso espera hasta que lleguen las 25 personas correspondientes al mismo, les
+entrega el examen a resolver (el mismo para todos los de ese concurso), y luego corrige los exámenes de esas
+25 personas de acuerdo al orden en que van entregando. Cada persona al llegar debe esperar a que su
+coordinador (el que corresponde a su concurso) le dé el examen, lo resuelve, lo entrega para que su
+coordinador lo evalúe y espera hasta que le deje la nota para luego retirarse. Nota: maximizar la concurrencia;
+sólo usar los procesos que representes a las personas y a los coordinadores; todos los procesos deben
+terminar.
+
+
+sem todos[1..4] = ([4], 0)
+sem esperandoNota[1..100]
+sem mutex[1..4] = ([4], 1)
+array contador[1..4] = ([4], 0)    
+array colas[1..4];
+sem mutexcolas[1..4] = ([4],1)
+sem examen[1..4] = ([4],0)
+sem entregado[1..4] = ([4],0)
+
+Procces personas[id:1..100]{
+    int Miconcurso;
+
+    P(mutex[Miconcurso]);
+    contador[Miconcurso]++;
+    if(contador[Miconcurso] == 25){
+        V(todos[Miconcurso])
+    }
+    V(mutex[Miconcurso]);
+    
+    P(examen[Miconcurso])
+    
+    //resuelvo examen
+    P(mutexcolas[Miconcurso])
+    colas[Miconcurso].push(id)
+    V(mutexcolas[Miconcurso])
+    V(entregado[Miconcurso])
+    P(esperandoNota[id])
+}
+
+Procces coordinadores[id:1..4]{
+    P(todos[id])
+    for i=0 i<25; i++ {
+        V(examen[id])
+    }
+
+    
+    for i=0 i<25; i++ {
+        P(entregado[id])
+
+        P(mutexcolas[id])
+        id_persona = colas[id].pop()
+        V(mutexcolas[id_persona])
+
+        //corrige examen
+
+        V(esperandoNota[id_persona])
+    }
+    
+
+}
+
+
+

@@ -1,0 +1,260 @@
+1. SEMÁFOROS. 
+Existen 15 sensores de temperatura y 2 módulos centrales de procesamiento. 
+Un sensor mide la temperatura cada cierto tiempo (función medir()), 
+la envía al módulo central para que le indique qué acción debe hacer (un número del 1 al 10) (función determinar() para el módulo central) y la hace (función realizar()). 
+Los módulos atienden las mediciones por orden de llegada.
+
+#OPCION 1
+
+Cola temp;
+sem mutex = 1
+sem pedido = 0
+array accion[1..15] = ([15],0)
+sem comenzar[1..15] = ([15],0)
+  
+Procces Sensores[id:1..15]{
+    While true{
+        temperatura = medir()
+        P(mutex)
+        temp.push(id,temperatura)
+        V(mutex)
+        V(pedido)
+        P(comenzar[id])
+        realizar(accion[id])
+    }
+}
+
+
+Procces Centrales[id:1..2]{
+    While true{
+        P(pedido)
+        P(mutex)
+        id,temp = temp.pop()
+        V(mutex)
+        accion[id] = determinar(temp)
+        V(comenzar[id])
+    }
+}
+
+
+
+2. MONITORES. 
+Una boletería vende E entradas para un partido, y hay P personas (P>E) que quieren comprar. 
+Se las atiende por orden de llegada y la función vender() simula la venta. 
+La boletería debe informarle a la persona que no hay más entradas disponibles o devolverle el número de entrada si pudo hacer la compra.
+
+
+Monitor administrar_entradas{
+    entradas = E
+    Esperando = 0
+    libre = true
+    cond Espera
+    
+    Procedure Recepcion(var hayEntradas){
+        hayEntradas = Entradas>0
+        if(hayEntradas){
+            if(not libre){
+                Esperando++;
+                wait (Espera)
+            }else{
+                libre = false
+            }
+        }
+    }
+
+
+    Procedure Retirar(var numero){
+        numero = vender()
+        entradas--;
+        if(esperando>0){
+            esperando--;
+            signal(Espera);
+        }else{
+            libre = true;
+        }
+    }
+}
+
+
+Procces persona[id:1..P]{
+    hayEntradas = false;
+    administrar_entradas.Recepcion(hayEntradas)
+    if(hayEntradas){
+        numero
+        administrar_entradas.Retirar(numero);
+    }
+}
+
+
+
+#JUAN 
+
+
+Monitor administrar_entradas{
+    entradas = E
+    Esperando = 0
+    libre = true
+    cond Espera
+    
+    Procedure Recepcion(){
+            if(not libre){
+                Esperando++;
+                wait (Espera)
+            }else{
+                libre = false
+            }
+        }
+
+
+    Procedure Retirar(var numero){
+        if(entradas>0){
+            numero = vender()
+            entradas--;
+        }
+        if(esperando>0){
+            esperando--;
+            signal(Espera);
+        }else{
+            libre = true;
+        }
+    }
+}
+
+
+Procces persona[id:1..P]{
+    administrar_entradas.Recepcion()
+    numero
+    administrar_entradas.Retirar(numero);
+}
+
+
+#teniendo en cuenta que se pueden seguir encolando
+
+Monitor administrar_entradas{
+    
+    Esperando = 0
+    libre = true
+    cond Espera
+    
+    Procedure Recepcion(){
+        if(not libre){
+            Esperando++;
+            wait (Espera)
+        }else{
+            libre = false
+        }
+    }
+
+
+    Procedure Retirar(  ){
+        if(esperando>0){
+            esperando--;
+            signal(Espera);
+        }else{
+            libre = true;
+        }
+    }
+}
+
+Monitor Entradas{
+    entradas = E
+
+    Procedure comprar(var numero){
+        if(entradas>0){
+            numero = vender()
+            entradas--
+        }
+    }
+}
+
+
+Procces persona[id:1..P]{
+    administrar_entradas.Recepcion()
+    numero 
+    Entradas.comprar(numero)
+    administrar_entradas.Retirar(numero);
+}
+
+
+
+
+
+
+
+3. MONITORES. 
+Por un puente turístico puede pasar sólo un auto a la vez. Hay N autos que quieren pasar (función pasar()) y lo hacen por orden de llegada.
+
+
+Monitor Puente{
+    cond Espera
+    esperando = 0;
+    libre = true;
+
+    Procedure Llegar(){
+        if(not libre){
+            esperando++;
+            wait (Espera)
+        }else{
+            libre = false;
+        }
+    }
+
+
+    Procedure Proximo(){
+        if(esperando>0){
+            esperando--;
+            signal(esperando)
+        }else{
+            libre = true;
+        }
+    }
+}
+
+Procces Auto[id:1..N]{
+    Puente.Llegar();
+    pasar()
+    Puente.Proximo()
+}
+
+
+
+Resolver con SEMÁFOROS el siguiente problema. En un restorán trabajan C cocineros y M mozos. De
+forma repetida, los cocineros preparan un plato y lo dejan listo en la bandeja de platos terminados, mientras
+que los mozos toman los platos de esta bandeja para repartirlos entre los comensales. Tanto los cocineros
+como los mozos trabajan de a un plato por vez. Modele el funcionamiento del restorán considerando que la
+bandeja de platos listos puede almacenar hasta P platos. No es necesario modelar a los comensales ni que
+los procesos terminen
+
+
+Platos bandeja[1..P] = ([P],null)
+int ocupado,libre = 1
+sem platos = P
+sem HayPlato = 0
+sem mutexM,mutexC = 1
+
+Procces Cocinero[id:1..C]{
+    
+    while(true){
+        plato = CrearPlato()
+        P(platos)
+        P(MutexC)
+        bandeja[libre] = plato;
+        libre = (libre+1) mod P;
+        V(MutexC)
+        V(HayPlato)
+    }
+}
+
+
+Procces Mozo[id:1..M]{
+    while(true){
+        P(HayPlato)
+        P(mutexM)
+        plato = bandeja[ocupado];
+        ocupado = (ocupado + 1) mod P;
+        V(mutexM)
+        V(platos)
+        repartirlo(plato);
+    }
+}
+
