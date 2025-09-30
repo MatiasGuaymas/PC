@@ -176,7 +176,41 @@ Resolver el siguiente problema. En una elección estudiantil, se utiliza una má
 
 ### <u>Respuesta</u>
 ```C
+Process Persona [id: 0..N-1] {
+	int edad = …;
+	Maquina.llegar(id, edad);
+	Votar();
+	Maquina.liberar();	
+}
 
+Process Autoridad {
+	for i: 0 .. N-1 {
+		Maquina.darPermiso();
+    }
+}
+
+Monitor Maquina {	
+	ColaOrdenada c;
+	cond espera[N];
+	cond hayPedido, esperaUso;
+
+	Procedure llegar (id: in int, edad: in int) {
+		c.pushOrdenado(id, edad);
+		signal (hayPedido);
+		wait (espera[id]);
+    }
+
+    Procedure darPermiso() {
+        if c.isEmpty() wait (hayPedido);
+        c.pop(id);
+        signal (espera[id]);
+        wait (esperaUso);
+    }
+
+    Procedure liberar() {
+        signal (esperaUso);
+    }
+}
 ```
 
 ## Ejercicio 2.
