@@ -87,7 +87,6 @@ Implemente una solución para el siguiente problema. Un sistema debe validar un 
 ```C
 sem mutexCola = 1;
 sem mutexBarrera = 1;
-sem barrera = 0;
 sem contador [10] = ([10], 1);
 int vectorContador [10] = ([10], 0);
 int cant = 0;
@@ -112,12 +111,8 @@ Process Worker [id: 0..6] {
         for i: 0..9 {
             writeln(i, ‘ ’, vectorContador[i]);
         }
-        for i: 0..6 {
-            V (barrera);
-        }
     }
     V (mutexBarrera);
-    P (barrera);
 }
 ```
 
