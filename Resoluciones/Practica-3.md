@@ -578,7 +578,7 @@ text comprobante;
 
 Process Empleado(){
 	Gestion.sig(lista);
-	while(lista == null){
+	while(lista != null){
 		text comprobante = generarC(lista);
 		Gestion.darleComprobante(comprobante);
 		Gestion.sig(lista);
