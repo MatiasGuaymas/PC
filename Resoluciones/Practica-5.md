@@ -586,9 +586,9 @@ End Playa;
 ```
 
 ## Ejercicio 6.
-### <u>Respuesta</u>
 Se debe calcular el valor promedio de un vector de 1 millón de números enteros que se encuentra distribuido entre 10 procesos Worker (es decir, cada Worker tiene un vector de 100 mil números). Para ello, existe un Coordinador que determina el momento en que se debe realizar el cálculo de este promedio y que, además, se queda con el resultado. Nota: maximizar la concurrencia; este cálculo se hace una sola vez.
 
+### <u>Respuesta</u>
 ```ADA
 Procedure Promedio is
 	TASK Coordinador IS
