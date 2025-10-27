@@ -9,7 +9,7 @@
 * [**Práctica 3**](https://github.com/MatiasGuaymas/PC/blob/main/Resoluciones/Practica-3.md)
 * [**Practica Repaso MC**](https://github.com/MatiasGuaymas/PC/blob/main/Resoluciones/Practica-Repaso-MC.md)
 * [**Práctica 4**](https://github.com/MatiasGuaymas/PC/blob/main/Resoluciones/Practica-4.md)
-* [**Práctica 4**](https://github.com/MatiasGuaymas/PC/blob/main/Resoluciones/Practica-5.md)
+* [**Práctica 5**](https://github.com/MatiasGuaymas/PC/blob/main/Resoluciones/Practica-5.md)
 
 ## Explicaciones Prácticas
 * [**1. Variables Compartidas**](https://github.com/MatiasGuaymas/PC/blob/main/Explicaciones/Explicacion-1---Variables-Compartidas.pdf) 
@@ -17,6 +17,7 @@
 * [**3. Monitores**](https://github.com/MatiasGuaymas/PC/blob/main/Explicaciones/Explicacion-3---Monitores.pdf)
 * [**4. PMA**](https://github.com/MatiasGuaymas/PC/blob/main/Explicaciones/Explicacion-4---Pasaje-de-Mensajes-Asincronicos.pdf)
 * [**4. PMS**](https://github.com/MatiasGuaymas/PC/blob/main/Explicaciones/Explicacion-4---Pasaje-de-Mensajes-Sincronicos.pdf)
+* [**5. ADA**](https://github.com/MatiasGuaymas/PC/blob/main/Explicaciones/Explicacion-5----ADA.pdf)
 
 ## Explicaciones Prácticas (clase)
 * [**1. Variables Compartidas**](https://github.com/MatiasGuaymas/PC/blob/main/Explicaciones/Explicacion-1---Variables-Compartidas---Clase.pdf) 
