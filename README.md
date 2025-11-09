@@ -10,6 +10,7 @@
 * [**Practica Repaso MC**](https://github.com/MatiasGuaymas/PC/blob/main/Resoluciones/Practica-Repaso-MC.md)
 * [**Práctica 4**](https://github.com/MatiasGuaymas/PC/blob/main/Resoluciones/Practica-4.md)
 * [**Práctica 5**](https://github.com/MatiasGuaymas/PC/blob/main/Resoluciones/Practica-5.md)
+* [**Practica Repaso MD**](https://github.com/MatiasGuaymas/PC/blob/main/Resoluciones/Practica-Repaso-MD.md)
 
 ## Explicaciones Prácticas
 * [**1. Variables Compartidas**](https://github.com/MatiasGuaymas/PC/blob/main/Explicaciones/Explicacion-1---Variables-Compartidas.pdf) 
